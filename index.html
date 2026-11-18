@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>НАВЬ — LXKHN</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Spectral:ital,wght@0,300;0,400;1,300&family=Noto+Sans+Glagolitic&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* Layout idea: a descent — each section sits a little deeper in the dark water, gold is the drowned light */
+  --abyss:#06080c;
+  --river:#0d131b;
+  --mist:#8a93a0;
+  --bone:#e8e2d2;
+  --ember:#d4ad72;
+  --line:rgba(232,226,210,.12);
+  --display:"Cormorant Garamond","Cormorant",Georgia,"Times New Roman",serif;
+  --body:"Spectral",Georgia,"Times New Roman",serif;
+  --glag:"Noto Sans Glagolitic","Segoe UI Historic","FreeSerif",serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{background:var(--abyss);scroll-behavior:smooth}
+body{margin:0;background:var(--abyss);color:var(--bone);font-family:var(--body);font-weight:300;font-size:18px;line-height:1.65;-webkit-font-smoothing:antialiased}
+img,video{max-width:100%;display:block}
+a{color:inherit}
+:focus-visible{outline:1px solid var(--ember);outline-offset:4px}
+.wrap{width:min(1120px,100% - 40px);margin-inline:auto}
+
+/* grain */
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:50;opacity:.07;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+/* top bar */
+.bar{position:absolute;top:0;left:0;right:0;z-index:5;padding:22px 0}
+.bar .wrap{display:flex;justify-content:space-between;align-items:center;gap:16px}
+.mark{font-family:var(--display);font-weight:500;letter-spacing:.42em;font-size:15px;text-decoration:none}
+.bar nav{display:flex;gap:26px;flex-wrap:wrap}
+.bar nav a{font-family:var(--display);font-size:15px;letter-spacing:.18em;text-transform:uppercase;text-decoration:none;color:var(--mist);transition:color .3s}
+.bar nav a:hover{color:var(--bone)}
+
+/* hero */
+.hero{position:relative;overflow:hidden;padding:150px 0 90px;isolation:isolate}
+.hero__bg{position:absolute;inset:0;z-index:-2;background:url("hero.jpg") 50% 38%/cover no-repeat;transform:scale(1.04);animation:drift 30s ease-in-out infinite alternate}
+.hero::before{content:"";position:absolute;inset:0;z-index:-1;
+  background:linear-gradient(180deg,rgba(6,8,12,.45) 0%,rgba(6,8,12,.2) 35%,rgba(6,8,12,.78) 80%,var(--abyss) 100%),
+             radial-gradient(60% 50% at 50% 42%,transparent 0%,rgba(6,8,12,.55) 100%)}
+.fog{position:absolute;left:-20%;right:-20%;height:40%;top:44%;z-index:-1;pointer-events:none;opacity:.5;
+  background:radial-gradient(40% 60% at 30% 50%,rgba(170,185,205,.16),transparent 70%),radial-gradient(35% 50% at 72% 55%,rgba(170,185,205,.12),transparent 70%);
+  animation:fog 22s linear infinite alternate}
+@keyframes drift{to{transform:scale(1.1) translateY(-1.5%)}}
+@keyframes fog{to{transform:translateX(9%)}}
+
+.glyphs{font-family:var(--glag);font-size:clamp(76px,15vw,196px);line-height:1;display:flex;justify-content:center;gap:.12em;margin:0;font-weight:400}
+.glyphs span{color:var(--bone);opacity:.32;text-shadow:0 0 0 rgba(212,173,114,0);animation:ignite 1.6s ease-out forwards, breathe 6s ease-in-out infinite}
+.glyphs span:nth-child(1){animation-delay:.2s,2.4s}
+.glyphs span:nth-child(2){animation-delay:.8s,3.0s}
+.glyphs span:nth-child(3){animation-delay:1.4s,3.6s}
+.glyphs span:nth-child(4){animation-delay:2.0s,4.2s}
+@keyframes ignite{0%{opacity:.32}35%{opacity:1;text-shadow:0 0 28px rgba(212,173,114,.95),0 0 70px rgba(212,173,114,.55)}100%{opacity:1;text-shadow:0 0 18px rgba(212,173,114,.45),0 0 50px rgba(212,173,114,.18)}}
+@keyframes breathe{0%,100%{text-shadow:0 0 18px rgba(212,173,114,.45),0 0 50px rgba(212,173,114,.18)}50%{text-shadow:0 0 26px rgba(212,173,114,.7),0 0 80px rgba(212,173,114,.3)}}
+
+.title{font-family:var(--display);font-weight:300;text-align:center;letter-spacing:.62em;padding-left:.62em;font-size:clamp(28px,4.4vw,52px);margin:18px 0 0;text-wrap:balance}
+.lede{text-align:center;max-width:34ch;margin:34px auto 0;font-family:var(--display);font-style:italic;font-weight:300;font-size:clamp(22px,2.6vw,30px);line-height:1.35;color:var(--bone);text-wrap:balance}
+.sub{text-align:center;color:var(--mist);margin:14px auto 0;font-size:16px;letter-spacing:.04em}
+
+/* player */
+.player{margin:56px auto 0;max-width:760px;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:20px;padding:16px 22px;border:1px solid var(--line);background:rgba(6,8,12,.55);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.play{width:54px;height:54px;border-radius:50%;border:1px solid rgba(212,173,114,.6);background:transparent;color:var(--ember);cursor:pointer;display:grid;place-items:center;transition:background .3s,box-shadow .3s}
+.play:hover{background:rgba(212,173,114,.1);box-shadow:0 0 24px rgba(212,173,114,.25)}
+.play svg{width:18px;height:18px}
+.wave{width:100%;height:56px;cursor:pointer;display:block}
+.pmeta{font-family:var(--display);font-size:15px;letter-spacing:.12em;color:var(--mist);text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+.pmeta b{display:block;color:var(--bone);font-weight:500;letter-spacing:.2em;text-transform:uppercase;font-size:13px}
+
+/* sections */
+section{position:relative}
+.sec{padding:120px 0}
+.eyebrow{font-family:var(--display);text-transform:uppercase;letter-spacing:.32em;font-size:13px;color:var(--ember);margin:0 0 22px;display:flex;align-items:center;gap:14px}
+.eyebrow::before{content:"";width:34px;height:1px;background:var(--ember);opacity:.6}
+h2{font-family:var(--display);font-weight:300;font-size:clamp(36px,5vw,62px);line-height:1.08;margin:0 0 28px;text-wrap:balance}
+
+.about{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:72px;align-items:center}
+.cover{position:relative}
+.cover img{width:100%;height:auto;aspect-ratio:1;object-fit:cover;box-shadow:0 40px 90px rgba(0,0,0,.6)}
+.cover::after{content:"";position:absolute;inset:-14px;border:1px solid var(--line);pointer-events:none}
+.about p{max-width:60ch;margin:0 0 18px;color:#cfc9ba}
+.note{margin-top:30px;padding-top:22px;border-top:1px solid var(--line);font-size:15px;color:var(--mist);max-width:56ch}
+
+/* tracklist */
+.legends{background:linear-gradient(180deg,var(--abyss),var(--river) 40%,var(--abyss));padding-bottom:140px}
+.tracks{list-style:none;margin:56px 0 0;padding:0;border-top:1px solid var(--line)}
+.track{display:grid;grid-template-columns:92px minmax(0,1fr) auto;gap:28px;align-items:baseline;padding:34px 0;border-bottom:1px solid var(--line);transition:background .4s}
+.track:hover{background:linear-gradient(90deg,rgba(212,173,114,.05),transparent 70%)}
+.num{font-family:var(--glag);font-size:46px;line-height:1;color:var(--ember);text-shadow:0 0 18px rgba(212,173,114,.35);text-align:center}
+.num small{display:block;font-family:var(--display);font-size:12px;letter-spacing:.2em;color:var(--mist);text-shadow:none;margin-top:10px}
+.track h3{font-family:var(--display);font-weight:400;font-size:clamp(28px,3.4vw,40px);line-height:1.1;margin:0 0 10px}
+.track p{margin:0;color:#c3bdaf;max-width:62ch}
+.tmeta{font-family:var(--display);font-size:14px;letter-spacing:.16em;color:var(--mist);text-transform:uppercase;text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+.tplay{margin-top:10px;background:none;border:0;padding:0;color:var(--ember);font:inherit;letter-spacing:.16em;cursor:pointer;text-transform:uppercase}
+.tplay:hover{text-decoration:underline;text-underline-offset:5px}
+.numhint{margin:22px 0 0;color:var(--mist);font-size:15px;max-width:60ch}
+
+/* reel */
+.reel{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,4fr);gap:72px;align-items:center}
+.phone{justify-self:center;width:min(340px,100%);border:1px solid var(--line);padding:10px;background:#000}
+.phone video{width:100%;aspect-ratio:9/16;object-fit:cover;background:#000}
+.reel p{max-width:52ch;color:#cfc9ba;margin:0 0 18px}
+.btn{display:inline-flex;align-items:center;gap:12px;margin-top:14px;padding:14px 22px;border:1px solid rgba(212,173,114,.6);text-decoration:none;font-family:var(--display);letter-spacing:.2em;text-transform:uppercase;font-size:14px;color:var(--ember);transition:background .3s}
+.btn:hover{background:rgba(212,173,114,.1)}
+
+/* trilogy */
+.trilogy{border-top:1px solid var(--line)}
+.worlds{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);margin-top:48px}
+.world{background:var(--abyss);padding:38px 32px 42px}
+.world .w{font-family:var(--display);font-weight:300;font-size:34px;letter-spacing:.4em;margin:0 0 6px}
+.world .s{font-family:var(--display);text-transform:uppercase;letter-spacing:.24em;font-size:12px;color:var(--mist);margin:0 0 18px}
+.world p{margin:0;color:#b9b3a6;font-size:16px}
+.world.now{background:linear-gradient(180deg,rgba(212,173,114,.08),var(--abyss) 70%)}
+.world.now .s{color:var(--ember)}
+.world.later{opacity:.55}
+
+footer{padding:70px 0 60px;border-top:1px solid var(--line);color:var(--mist);font-size:15px}
+footer .wrap{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;align-items:center}
+footer .g{font-family:var(--glag);font-size:26px;color:var(--bone);letter-spacing:.2em}
+
+@media (max-width:860px){
+  .bar nav{display:none}
+  .hero{padding:110px 0 64px}
+  .hero__bg{background-position:62% 30%}
+  .cover::after{inset:-8px}
+  .sec{padding:72px 0}
+  .title{letter-spacing:.5em;padding-left:.5em}
+  body{font-size:17px}
+  .about,.reel{grid-template-columns:1fr;gap:48px}
+  .worlds{grid-template-columns:1fr}
+  .track{grid-template-columns:56px minmax(0,1fr);gap:18px}
+  .num{font-size:34px}
+  .tmeta{grid-column:2;text-align:left}
+  .player{grid-template-columns:auto 1fr;}
+  .pmeta{grid-column:1 / -1;text-align:left}
+}
+@media (prefers-reduced-motion:reduce){
+  .hero__bg,.fog{animation:none}
+  .glyphs span{animation:none;opacity:1;text-shadow:0 0 18px rgba(212,173,114,.45)}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <div class="wrap">
+    <a class="mark" href="#top">LXKHN</a>
+    <nav aria-label="Разделы">
+      <a href="#listen">Слушать</a>
+      <a href="#legends">Легенды</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero" id="top">
+  <div class="hero__bg" role="img" aria-label="Девушка в белом на берегу ночного озера, в воде отражается светящийся храм"></div>
+  <div class="fog" aria-hidden="true"></div>
+  <div class="wrap">
+    <p class="glyphs" aria-label="НАВЬ глаголицей"><span>&#x2C10;</span><span>&#x2C00;</span><span>&#x2C02;</span><span>&#x2C20;</span></p>
+    <h1 class="title">НАВЬ</h1>
+    <p class="lede">Там, где кончается свет, начинается Навь.</p>
+    <p class="sub">Альбом LXKHN · славянский фонк и древние напевы · скоро</p>
+
+    <div class="player" id="listen">
+      <button class="play" id="play" type="button" aria-label="Слушать интро «Навь»">
+        <svg id="ico" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M5 3.5v13l11-6.5z"/></svg>
+      </button>
+      <canvas class="wave" id="wave" aria-label="Звуковая дорожка интро, нажмите для перемотки"></canvas>
+      <div class="pmeta"><b>Навь · интро</b><span id="time">0:00 / 0:30</span></div>
+    </div>
+    <audio id="audio" src="intro.mp3" preload="metadata"></audio>
+  </div>
+</section>
+
+<section class="sec" id="about">
+  <div class="wrap about">
+    <div class="cover"><img src="cover.jpg" alt="Обложка альбома НАВЬ: девушка у ночного озера, надпись глаголицей и кириллицей" width="1200" height="1200"></div>
+    <div>
+      <p class="eyebrow">Об альбоме</p>
+      <h2>Мир славянских преданий, оживший в звуке</h2>
+      <p>Шесть треков, шесть легенд. Город, ушедший под воду. Венок на купальской воде. Голос из тёмной реки. Проводы зимы. День, когда предки приходят к живым.</p>
+      <p>Тяжёлый бас и тишина перед ударом, а над ними одинокий женский распев. Он звучит редко, поэтому каждое его появление запоминается.</p>
+      <p class="note">В славянской традиции Навь — мир ушедших. Здесь это художественный образ, а не реконструкция древних верований.</p>
+    </div>
+  </div>
+</section>
+
+<section class="sec legends" id="legends">
+  <div class="wrap">
+    <p class="eyebrow">Треклист</p>
+    <h2>Шесть легенд</h2>
+    <ol class="tracks">
+      <li class="track">
+        <div class="num">&#x2C00;<small>1</small></div>
+        <div><h3>Навь</h3><p>Зов из-за грани. Короткое вступление, через которое входишь в мир ушедших.</p></div>
+        <div class="tmeta">Интро<br><button class="tplay" type="button" data-play>Слушать</button></div>
+      </li>
+      <li class="track">
+        <div class="num">&#x2C01;<small>2</small></div>
+        <div><h3>Град во озере</h3><p>Город ушёл под воды озера Светлояр, чтобы не достаться врагу. В тихую ночь из-под воды до сих пор слышен звон.</p></div>
+        <div class="tmeta">142 BPM</div>
+      </li>
+      <li class="track">
+        <div class="num">&#x2C02;<small>3</small></div>
+        <div><h3>Венок по воде</h3><p>Купальская ночь. Девушки пускают венки: поплыл — к счастью, утонул — к беде. В эту ночь граница миров тоньше всего.</p></div>
+        <div class="tmeta">142 BPM</div>
+      </li>
+      <li class="track">
+        <div class="num">&#x2C03;<small>4</small></div>
+        <div><h3>Русалка</h3><p>Души девушек, ушедших в воду. В Русальную неделю они выходят на берег и зовут путников с собой.</p></div>
+        <div class="tmeta">140 BPM</div>
+      </li>
+      <li class="track">
+        <div class="num">&#x2C04;<small>5</small></div>
+        <div><h3>Морена</h3><p>Богиня зимы и смерти. Весной её чучело сжигают или топят, провожая зиму.</p></div>
+        <div class="tmeta">138 BPM</div>
+      </li>
+      <li class="track">
+        <div class="num">&#x2C05;<small>6</small></div>
+        <div><h3>Навий день</h3><p>День поминовения. По поверьям, в этот день предки приходят к живым.</p></div>
+        <div class="tmeta">140 BPM</div>
+      </li>
+    </ol>
+    <p class="numhint">Номера треков записаны глаголическими цифрами: в старой азбуке буквы служили и числами, Ⰰ — один, Ⰱ — два, и дальше по порядку.</p>
+  </div>
+</section>
+
+<script>
+(function(){
+  const P=[0.0,0.476,0.075,0.06,0.138,0.107,0.478,0.087,0.129,0.171,0.455,0.241,0.123,0.146,0.191,0.557,0.211,0.167,0.176,0.164,0.671,0.206,0.238,0.322,0.316,0.515,0.289,0.231,0.259,0.466,0.332,0.268,0.338,0.314,0.517,0.244,0.219,0.195,0.19,0.526,0.235,0.309,0.351,0.326,0.505,0.343,0.308,0.286,0.392,0.436,0.298,0.321,0.33,0.456,0.291,0.229,0.252,0.261,0.522,0.243,0.278,0.323,0.257,0.492,0.203,0.203,0.233,0.261,0.499,0.321,0.363,0.367,0.455,0.311,0.149,0.293,0.279,0.792,0.79,0.735,0.62,0.571,0.906,0.505,0.609,0.521,0.577,0.864,0.581,0.577,0.53,0.667,0.596,0.48,0.517,0.476,0.801,0.781,0.578,0.568,0.597,0.539,0.516,0.74,0.804,0.493,0.978,0.69,0.574,0.56,0.531,0.521,0.547,0.559,0.747,0.809,0.721,0.536,0.507,0.584,0.516,0.529,0.731,0.884,0.511,1.0,0.677,0.578,0.64,0.523,0.514,0.503,0.546,0.717,0.775,0.788,0.542,0.488,0.579,0.442,0.405,0.494,0.589,0.249,0.617,0.152,0.045,0.205,0.062,0.045,0.041,0.285,0.046,0.255,0.154,0.022,0.009,0.008,0.004,0.026];
+  const audio=document.getElementById('audio'),btn=document.getElementById('play'),ico=document.getElementById('ico'),cv=document.getElementById('wave'),tm=document.getElementById('time');
+  const ctx=cv.getContext('2d');
+  const PLAY='<path d="M5 3.5v13l11-6.5z"/>',PAUSE='<path d="M5 3h3.5v14H5zM11.5 3H15v14h-3.5z"/>';
+  const fmt=s=>{s=Math.max(0,Math.floor(s||0));return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')};
+  let dur=29.84;
+  function draw(){
+    const r=window.devicePixelRatio||1,w=cv.clientWidth,h=cv.clientHeight;
+    if(cv.width!==Math.round(w*r)){cv.width=Math.round(w*r);cv.height=Math.round(h*r)}
+    ctx.setTransform(r,0,0,r,0,0);ctx.clearRect(0,0,w,h);
+    const n=P.length,gap=2,bw=Math.max(1,(w-gap*(n-1))/n),prog=audio.currentTime/(audio.duration||dur);
+    for(let i=0;i<n;i++){
+      const v=Math.max(.04,P[i]),bh=v*(h-6),x=i*(bw+gap),y=(h-bh)/2,done=i/n<prog;
+      ctx.fillStyle=done?'#d4ad72':'rgba(232,226,210,.28)';
+      if(done){ctx.shadowColor='rgba(212,173,114,.6)';ctx.shadowBlur=8}else{ctx.shadowBlur=0}
+      ctx.fillRect(x,y,bw,bh);
+    }
+    ctx.shadowBlur=0;
+  }
+  function loop(){draw();tm.textContent=fmt(audio.currentTime)+' / '+fmt(audio.duration||dur);if(!audio.paused)requestAnimationFrame(loop)}
+  async function toggle(){
+    try{
+      if(audio.paused){await audio.play()}else{audio.pause()}
+    }catch(e){tm.textContent='Звук недоступен в этом окне'}
+  }
+  btn.addEventListener('click',toggle);
+  document.querySelectorAll('[data-play]').forEach(b=>b.addEventListener('click',()=>{document.getElementById('listen').scrollIntoView({behavior:'smooth',block:'center'});if(audio.paused)toggle()}));
+  audio.addEventListener('play',()=>{ico.innerHTML=PAUSE;btn.setAttribute('aria-label','Пауза');loop()});
+  audio.addEventListener('pause',()=>{ico.innerHTML=PLAY;btn.setAttribute('aria-label','Слушать интро «Навь»');draw()});
+  audio.addEventListener('ended',()=>{audio.currentTime=0;draw()});
+  audio.addEventListener('loadedmetadata',()=>{dur=audio.duration;loop()});
+  cv.addEventListener('click',e=>{const r=cv.getBoundingClientRect();audio.currentTime=((e.clientX-r.left)/r.width)*(audio.duration||dur);loop()});
+  window.addEventListener('resize',draw);
+  draw();
+})();
+</script>
+</body>
+</html>
