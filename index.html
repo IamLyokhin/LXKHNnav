@@ -71,7 +71,8 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:50;opa
 .play{width:54px;height:54px;border-radius:50%;border:1px solid rgba(212,173,114,.6);background:transparent;color:var(--ember);cursor:pointer;display:grid;place-items:center;transition:background .3s,box-shadow .3s}
 .play:hover{background:rgba(212,173,114,.1);box-shadow:0 0 24px rgba(212,173,114,.25)}
 .play svg{width:18px;height:18px}
-.wave{width:100%;min-width:0;max-width:100%;height:56px;cursor:pointer;display:block}
+.wavebox{position:relative;height:56px;min-width:0;overflow:hidden}
+.wave{position:absolute;inset:0;width:100%;height:100%;cursor:pointer;display:block}
 .pmeta{font-family:var(--display);font-size:15px;letter-spacing:.12em;color:var(--mist);text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
 .pmeta b{display:block;color:var(--bone);font-weight:500;letter-spacing:.2em;text-transform:uppercase;font-size:13px}
 
@@ -175,7 +176,7 @@ footer .g{font-family:var(--glag);font-size:26px;color:var(--bone);letter-spacin
       <button class="play" id="play" type="button" aria-label="Слушать интро «Навь»">
         <svg id="ico" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M5 3.5v13l11-6.5z"/></svg>
       </button>
-      <canvas class="wave" id="wave" aria-label="Звуковая дорожка интро, нажмите для перемотки"></canvas>
+      <div class="wavebox" id="wavebox"><canvas class="wave" id="wave" aria-label="Звуковая дорожка интро, нажмите для перемотки"></canvas></div>
       <div class="pmeta"><b>Навь · интро</b><span id="time">0:00 / 0:30</span></div>
     </div>
     <audio id="audio" src="intro.mp3" preload="metadata"></audio>
@@ -244,7 +245,7 @@ footer .g{font-family:var(--glag);font-size:26px;color:var(--bone);letter-spacin
   const fmt=s=>{s=Math.max(0,Math.floor(s||0));return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')};
   let dur=29.84;
   function draw(){
-    const r=window.devicePixelRatio||1,w=cv.clientWidth,h=cv.clientHeight;
+    const box=document.getElementById('wavebox'),r=Math.min(2,window.devicePixelRatio||1),w=box.clientWidth,h=box.clientHeight;
     if(cv.width!==Math.round(w*r)){cv.width=Math.round(w*r);cv.height=Math.round(h*r)}
     ctx.setTransform(r,0,0,r,0,0);ctx.clearRect(0,0,w,h);
     const n=P.length,gap=2,bw=Math.max(1,(w-gap*(n-1))/n),prog=audio.currentTime/(audio.duration||dur);
