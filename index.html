@@ -248,9 +248,11 @@ footer .g{font-family:var(--glag);font-size:26px;color:var(--bone);letter-spacin
     const box=document.getElementById('wavebox'),r=Math.min(2,window.devicePixelRatio||1),w=box.clientWidth,h=box.clientHeight;
     if(cv.width!==Math.round(w*r)){cv.width=Math.round(w*r);cv.height=Math.round(h*r)}
     ctx.setTransform(r,0,0,r,0,0);ctx.clearRect(0,0,w,h);
-    const n=P.length,gap=2,bw=Math.max(1,(w-gap*(n-1))/n),prog=audio.currentTime/(audio.duration||dur);
+    const gap=2,n=Math.max(20,Math.min(P.length,Math.floor((w+gap)/(2+gap)))),bw=(w-gap*(n-1))/n,prog=audio.currentTime/(audio.duration||dur);
     for(let i=0;i<n;i++){
-      const v=Math.max(.04,P[i]),bh=v*(h-6),x=i*(bw+gap),y=(h-bh)/2,done=i/n<prog;
+      const a=Math.floor(i*P.length/n),b=Math.max(a+1,Math.floor((i+1)*P.length/n));
+      let v=0;for(let k=a;k<b;k++)v=Math.max(v,P[k]);
+      v=Math.max(.04,v);const bh=v*(h-6),x=i*(bw+gap),y=(h-bh)/2,done=(i+.5)/n<=prog;
       ctx.fillStyle=done?'#d4ad72':'rgba(232,226,210,.28)';
       if(done){ctx.shadowColor='rgba(212,173,114,.6)';ctx.shadowBlur=8}else{ctx.shadowBlur=0}
       ctx.fillRect(x,y,bw,bh);
