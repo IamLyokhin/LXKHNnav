@@ -54,11 +54,11 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:50;opa
 @keyframes fog{to{transform:translateX(9%)}}
 
 .glyphs{font-family:var(--glag);font-size:clamp(76px,15vw,196px);line-height:1;display:flex;justify-content:center;gap:.12em;margin:0;font-weight:400}
-.glyphs span{color:var(--bone);opacity:.32;text-shadow:0 0 0 rgba(212,173,114,0);animation:ignite 1.6s ease-out forwards, breathe 6s ease-in-out infinite}
-.glyphs span:nth-child(1){animation-delay:.2s,2.4s}
-.glyphs span:nth-child(2){animation-delay:.8s,3.0s}
-.glyphs span:nth-child(3){animation-delay:1.4s,3.6s}
-.glyphs span:nth-child(4){animation-delay:2.0s,4.2s}
+.glyphs span{color:var(--bone);opacity:.32;text-shadow:0 0 0 rgba(212,173,114,0);animation:ignite 3.6s ease-out forwards, breathe 10s ease-in-out infinite}
+.glyphs span:nth-child(1){animation-delay:.4s,4s}
+.glyphs span:nth-child(2){animation-delay:1.8s,5.4s}
+.glyphs span:nth-child(3){animation-delay:3.2s,6.8s}
+.glyphs span:nth-child(4){animation-delay:4.6s,8.2s}
 @keyframes ignite{0%{opacity:.32}35%{opacity:1;text-shadow:0 0 28px rgba(212,173,114,.95),0 0 70px rgba(212,173,114,.55)}100%{opacity:1;text-shadow:0 0 18px rgba(212,173,114,.45),0 0 50px rgba(212,173,114,.18)}}
 @keyframes breathe{0%,100%{text-shadow:0 0 18px rgba(212,173,114,.45),0 0 50px rgba(212,173,114,.18)}50%{text-shadow:0 0 26px rgba(212,173,114,.7),0 0 80px rgba(212,173,114,.3)}}
 
@@ -103,11 +103,11 @@ h2{font-family:var(--display);font-weight:300;font-size:clamp(36px,5vw,62px);lin
 .tplay{margin-top:10px;background:none;border:0;padding:0;color:var(--ember);font:inherit;letter-spacing:.16em;cursor:pointer;text-transform:uppercase}
 .tplay:hover{text-decoration:underline;text-underline-offset:5px}
 .numhint{margin:22px 0 0;color:var(--mist);font-size:15px;max-width:60ch}
-.social{display:flex;justify-content:center;gap:14px;margin:22px auto 0}
-.social a{display:grid;place-items:center;width:48px;height:48px;opacity:.85;transition:opacity .3s,transform .3s}
-.social a:hover{opacity:1;transform:translateY(-2px)}
-.social img{display:block;height:22px;width:auto}
-.social img.vk{height:26px}
+.social{display:flex;justify-content:center;align-items:center;gap:30px;margin:26px auto 0}
+.social a{display:grid;place-items:center;width:56px;height:56px;opacity:.72;transition:opacity .4s,filter .4s,transform .4s}
+.social a:hover{opacity:1;transform:translateY(-2px);filter:drop-shadow(0 0 10px rgba(212,173,114,.55))}
+.social img{display:block;height:30px;width:auto}
+.social img.vk{height:32px}
 
 /* reel */
 .reel{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,4fr);gap:72px;align-items:center}
@@ -185,8 +185,8 @@ footer .g{font-family:var(--glag);font-size:26px;color:var(--bone);letter-spacin
       <div class="pmeta"><b>Навь · интро</b><span id="time">0:00 / 0:30</span></div>
     </div>
     <nav class="social" aria-label="LXKHN в соцсетях">
-      <a href="https://www.youtube.com/@LXKHNmusic" target="_blank" rel="noopener" aria-label="LXKHN на YouTube" title="YouTube"><img src="icon-youtube.png" alt="" width="31" height="22"></a>
-      <a href="https://vk.ru/lxkhn" target="_blank" rel="noopener" aria-label="LXKHN ВКонтакте" title="ВКонтакте"><img class="vk" src="icon-vk.svg" alt="" width="26" height="26"></a>
+      <a href="https://www.youtube.com/@LXKHNmusic" target="_blank" rel="noopener" aria-label="LXKHN на YouTube" title="YouTube"><img src="icon-youtube-white.png" alt="" width="43" height="30"></a>
+      <a href="https://vk.ru/lxkhn" target="_blank" rel="noopener" aria-label="LXKHN ВКонтакте" title="ВКонтакте"><img class="vk" src="icon-vk-white.svg" alt="" width="32" height="32"></a>
     </nav>
     <audio id="audio" src="intro.mp3" preload="metadata"></audio>
   </div>
@@ -283,6 +283,14 @@ footer .g{font-family:var(--glag);font-size:26px;color:var(--bone);letter-spacin
   cv.addEventListener('click',e=>{const r=cv.getBoundingClientRect();audio.currentTime=((e.clientX-r.left)/r.width)*(audio.duration||dur);loop()});
   window.addEventListener('resize',draw);
   draw();
+  // autoplay: browsers often block sound until the first interaction, so retry on the first tap/click/key
+  function arm(){
+    const go=()=>{off();if(audio.paused&&audio.currentTime===0)audio.play().catch(()=>{})};
+    const off=()=>['pointerdown','keydown','touchstart'].forEach(e=>window.removeEventListener(e,go,true));
+    ['pointerdown','keydown','touchstart'].forEach(e=>window.addEventListener(e,go,{capture:true,once:true}));
+  }
+  const tryPlay=audio.play();
+  if(tryPlay&&tryPlay.catch)tryPlay.catch(arm);
 })();
 </script>
 </body>
